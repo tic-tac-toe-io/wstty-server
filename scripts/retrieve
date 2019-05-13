@@ -12,6 +12,7 @@ function copy_files {
 	cp -vR ${SRC}/app ${DIR}/
 	cp -vR ${SRC}/assets ${DIR}/
 	cp -vR ${SRC}/config ${DIR}/
+	cp -vf ${SRC}/../../../../CHANGELOG.md ${DIR}/
 }
 
 copy_files $@
