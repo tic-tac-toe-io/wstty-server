@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+
+function copy_files {
+	local SRC="../../t2t/yapps-tt/apps/wstty-server/work/dists/raw/wstty-server"
+	local TMP=$(pwd)
+	cd $(dirname $0)/../
+	local DIR=$(pwd)
+	cd ${TMP}
+	cp -vf ${SRC}/index.js ${DIR}/
+	cp -vf ${SRC}/package.json ${DIR}/
+	cp -vR ${SRC}/app ${DIR}/
+	cp -vR ${SRC}/assets ${DIR}/
+	cp -vR ${SRC}/config ${DIR}/
+}
+
+copy_files $@
