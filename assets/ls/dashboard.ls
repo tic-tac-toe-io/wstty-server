@@ -1,5 +1,31 @@
 # $ '.collapse' .collapse!
 
+class GeoLocation
+  (@geodata) ->
+    @ip = \0.0.0.0
+    @country_flag_emoji = ""
+    @region_name = \Unknown
+    @country_name = \Unknown
+    @continent_name = \Unknown
+    @latitude = 0.0
+    @longitude = 0.0
+    @time_zone_id = "Unknown/Unknown"
+    @time_zone_code = "GMT+0"
+    return unless geodata?
+    return unless geodata.data?
+    return unless geodata.data['ipstack.com']
+    @ip = geodata.ip if geodata.ip?
+    x = geodata.data['ipstack.com']
+    @country_flag_emoji = x.location.country_flag_emoji if x.location.country_flag_emoji?
+    @region_name = x.region_name if x.region_name?
+    @country_name = x.country_name if x.country_name?
+    @continent_name = x.continent_name if x.continent_name?
+    @latitude = x.latitude if x.latitude?
+    @longitude = x.longitude if x.longitude?
+    @time_zone_id = x.time_zone.id if x.time_zone.id?
+    @time_zone_code = x.time_zone.code if x.time_zone.code?
+
+
 class AgentPanel
   (@data, @index) ->
     return
@@ -9,13 +35,12 @@ class AgentPanel
     {ipv4, mac, software_version, socketio_version, protocol_version} = cc
     {profile, profile_version, sn} = ttt
     {node_version, node_arch, node_platform}  = runtime
-    {ip} = geoip
-    geolocation = geoip.data['ipstack.com']
+    geo = new GeoLocation geoip
+    # geolocation = geoip.data['ipstack.com']
     sio = ""
     sio = ", sio-#{socketio_version}" if socketio_version? and socketio_version isnt "unknown"
     vinfo = profile_version
     vinfo = "#{profile_version} (<small>#{software_version}</small>)" if software_version? and software_version isnt "unknown"
-    ninfo = "#{ipv4}<br>#{ip}"
     uptime = humanizeDuration uptime, largest: 3, round: true, units: <[y mo w d h m s]>
     {hostname} = os
     cid = "collapse_#{id}"
@@ -41,15 +66,15 @@ class AgentPanel
                   <small>
                     <p>hostname: <strong>#{hostname}</strong></p>
                     <p>private: <strong>#{ipv4}</strong></p>
-                    <p>public: <strong>#{ip}</strong></p>
+                    <p>public: <strong>#{geo.ip}</strong></p>
                     <p>uptime: #{uptime}</p>
                   </small>
                   </td>
                   <td><small>
                     <p>#{node_platform}-#{node_arch}</p>
                     <p>#{mac}</p>
-                    <p>#{geolocation.location.country_flag_emoji} #{geolocation.region_name}, #{geolocation.country_name}, #{geolocation.continent_name} (<a href="https://maps.google.com?z=14&ll=#{geolocation.latitude},#{geolocation.longitude}">map</a>)</p>
-                    <p>#{geolocation.time_zone.id} (<strong>#{geolocation.time_zone.code}</strong>)</p>
+                    <p>#{geo.country_flag_emoji} #{geo.region_name}, #{geo.country_name}, #{geo.continent_name} (<a href="https://maps.google.com?z=14&ll=#{geo.latitude},#{geo.longitude}">map</a>)</p>
+                    <p>#{geo.time_zone_id} (<strong>#{geo.time_zone_code}</strong>)</p>
                   </small></td>
                   </tr>
                 <tr><td>configurations</td><td>
@@ -267,6 +292,7 @@ class TerminalPanel
       return s.emit \authentication, username: username, password: password
 
     term.on \data, (data) -> s.emit \tty, data
+    term.focus!
     s.on \tty, (chunk) -> document.term.write chunk
 
     s.on \authenticated, ->

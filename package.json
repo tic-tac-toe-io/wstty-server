@@ -7,7 +7,7 @@
   },
   "description": "N/A",
   "name": "wstty-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "engines": {
     "node": "8.11.1"
   },

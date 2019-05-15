@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3] - 2019-05-15
+### Changed
+- upgrade `term.js` to `xterm.js` with better maintainabilitiy
+
+### Fixed
+- #1, blank screen because of missing geolocation information
+
 ## [1.0.2] - 2019-05-13
 ### Added
 - Apply [CHANGELOG](https://keepachangelog.com/en/1.0.0/) format in repository
