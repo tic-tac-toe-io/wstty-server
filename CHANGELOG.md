@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4] - 2019-05-16
+### Changed
+- upgrade `socket.io` from 2.0.4 to 2.2.0 (rollback from `uws` to `ws` engine)
+
+### Fixed
+- upgrade handlebars from 4.0.12 to 4.1.2 for vulnerability warning
+- upgrade js-yaml from 3.11.0 to 3.13.1 for vulnerability warning
+
 ## [1.0.3] - 2019-05-15
 ### Changed
 - upgrade `term.js` to `xterm.js` with better maintainabilitiy

@@ -18755,7 +18755,7 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var VERSION = '4.0.12';
+var VERSION = '4.1.2';
 exports.VERSION = VERSION;
 var COMPILER_REVISION = 7;
 
@@ -19710,7 +19710,7 @@ function SourceLocation(source, locInfo) {
 
 function id(token) {
   if (/^\[.*\]$/.test(token)) {
-    return token.substr(1, token.length - 2);
+    return token.substring(1, token.length - 1);
   } else {
     return token;
   }
@@ -19924,6 +19924,9 @@ JavaScriptCompiler.prototype = {
   // PUBLIC API: You can override these methods in a subclass to provide
   // alternative compiled forms for name lookup and buffering semantics
   nameLookup: function nameLookup(parent, name /* , type*/) {
+    if (name === 'constructor') {
+      return ['(', parent, '.propertyIsEnumerable(\'constructor\') ? ', parent, '.constructor : undefined', ')'];
+    }
     if (JavaScriptCompiler.isValidJavaScriptVariableName(name)) {
       return [parent, '.', name];
     } else {
@@ -21036,8 +21039,7 @@ var handlebars = (function () {
         symbols_: { "error": 2, "root": 3, "program": 4, "EOF": 5, "program_repetition0": 6, "statement": 7, "mustache": 8, "block": 9, "rawBlock": 10, "partial": 11, "partialBlock": 12, "content": 13, "COMMENT": 14, "CONTENT": 15, "openRawBlock": 16, "rawBlock_repetition_plus0": 17, "END_RAW_BLOCK": 18, "OPEN_RAW_BLOCK": 19, "helperName": 20, "openRawBlock_repetition0": 21, "openRawBlock_option0": 22, "CLOSE_RAW_BLOCK": 23, "openBlock": 24, "block_option0": 25, "closeBlock": 26, "openInverse": 27, "block_option1": 28, "OPEN_BLOCK": 29, "openBlock_repetition0": 30, "openBlock_option0": 31, "openBlock_option1": 32, "CLOSE": 33, "OPEN_INVERSE": 34, "openInverse_repetition0": 35, "openInverse_option0": 36, "openInverse_option1": 37, "openInverseChain": 38, "OPEN_INVERSE_CHAIN": 39, "openInverseChain_repetition0": 40, "openInverseChain_option0": 41, "openInverseChain_option1": 42, "inverseAndProgram": 43, "INVERSE": 44, "inverseChain": 45, "inverseChain_option0": 46, "OPEN_ENDBLOCK": 47, "OPEN": 48, "mustache_repetition0": 49, "mustache_option0": 50, "OPEN_UNESCAPED": 51, "mustache_repetition1": 52, "mustache_option1": 53, "CLOSE_UNESCAPED": 54, "OPEN_PARTIAL": 55, "partialName": 56, "partial_repetition0": 57, "partial_option0": 58, "openPartialBlock": 59, "OPEN_PARTIAL_BLOCK": 60, "openPartialBlock_repetition0": 61, "openPartialBlock_option0": 62, "param": 63, "sexpr": 64, "OPEN_SEXPR": 65, "sexpr_repetition0": 66, "sexpr_option0": 67, "CLOSE_SEXPR": 68, "hash": 69, "hash_repetition_plus0": 70, "hashSegment": 71, "ID": 72, "EQUALS": 73, "blockParams": 74, "OPEN_BLOCK_PARAMS": 75, "blockParams_repetition_plus0": 76, "CLOSE_BLOCK_PARAMS": 77, "path": 78, "dataName": 79, "STRING": 80, "NUMBER": 81, "BOOLEAN": 82, "UNDEFINED": 83, "NULL": 84, "DATA": 85, "pathSegments": 86, "SEP": 87, "$accept": 0, "$end": 1 },
         terminals_: { 2: "error", 5: "EOF", 14: "COMMENT", 15: "CONTENT", 18: "END_RAW_BLOCK", 19: "OPEN_RAW_BLOCK", 23: "CLOSE_RAW_BLOCK", 29: "OPEN_BLOCK", 33: "CLOSE", 34: "OPEN_INVERSE", 39: "OPEN_INVERSE_CHAIN", 44: "INVERSE", 47: "OPEN_ENDBLOCK", 48: "OPEN", 51: "OPEN_UNESCAPED", 54: "CLOSE_UNESCAPED", 55: "OPEN_PARTIAL", 60: "OPEN_PARTIAL_BLOCK", 65: "OPEN_SEXPR", 68: "CLOSE_SEXPR", 72: "ID", 73: "EQUALS", 75: "OPEN_BLOCK_PARAMS", 77: "CLOSE_BLOCK_PARAMS", 80: "STRING", 81: "NUMBER", 82: "BOOLEAN", 83: "UNDEFINED", 84: "NULL", 85: "DATA", 87: "SEP" },
         productions_: [0, [3, 2], [4, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [7, 1], [13, 1], [10, 3], [16, 5], [9, 4], [9, 4], [24, 6], [27, 6], [38, 6], [43, 2], [45, 3], [45, 1], [26, 3], [8, 5], [8, 5], [11, 5], [12, 3], [59, 5], [63, 1], [63, 1], [64, 5], [69, 1], [71, 3], [74, 3], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [20, 1], [56, 1], [56, 1], [79, 2], [78, 1], [86, 3], [86, 1], [6, 0], [6, 2], [17, 1], [17, 2], [21, 0], [21, 2], [22, 0], [22, 1], [25, 0], [25, 1], [28, 0], [28, 1], [30, 0], [30, 2], [31, 0], [31, 1], [32, 0], [32, 1], [35, 0], [35, 2], [36, 0], [36, 1], [37, 0], [37, 1], [40, 0], [40, 2], [41, 0], [41, 1], [42, 0], [42, 1], [46, 0], [46, 1], [49, 0], [49, 2], [50, 0], [50, 1], [52, 0], [52, 2], [53, 0], [53, 1], [57, 0], [57, 2], [58, 0], [58, 1], [61, 0], [61, 2], [62, 0], [62, 1], [66, 0], [66, 2], [67, 0], [67, 1], [70, 1], [70, 2], [76, 1], [76, 2]],
-        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$
-        /*``*/) {
+        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$) {
 
             var $0 = $$.length - 1;
             switch (yystate) {
@@ -21574,11 +21576,10 @@ var handlebars = (function () {
                 this.begin(condition);
             } };
         lexer.options = {};
-        lexer.performAction = function anonymous(yy, yy_, $avoiding_name_collisions, YY_START
-        /*``*/) {
+        lexer.performAction = function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
 
             function strip(start, end) {
-                return yy_.yytext = yy_.yytext.substr(start, yy_.yyleng - end);
+                return yy_.yytext = yy_.yytext.substring(start, yy_.yyleng - end + start);
             }
 
             var YYSTATE = YY_START;
@@ -21615,7 +21616,7 @@ var handlebars = (function () {
                     if (this.conditionStack[this.conditionStack.length - 1] === 'raw') {
                         return 15;
                     } else {
-                        yy_.yytext = yy_.yytext.substr(5, yy_.yyleng - 9);
+                        strip(5, 9);
                         return 'END_RAW_BLOCK';
                     }
 
@@ -22701,7 +22702,13 @@ exports.__esModule = true;
 
 exports['default'] = function (instance) {
   instance.registerHelper('lookup', function (obj, field) {
-    return obj && obj[field];
+    if (!obj) {
+      return obj;
+    }
+    if (field === 'constructor' && !obj.propertyIsEnumerable(field)) {
+      return undefined;
+    }
+    return obj[field];
   });
 };
 
@@ -24148,6 +24155,8 @@ var PATTERN_TAG_HANDLE            = /^(?:!|!!|![a-z\-]+!)$/i;
 var PATTERN_TAG_URI               = /^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;
 
 
+function _class(obj) { return Object.prototype.toString.call(obj); }
+
 function is_EOL(c) {
   return (c === 0x0A/* LF */) || (c === 0x0D/* CR */);
 }
@@ -24402,6 +24411,31 @@ function mergeMappings(state, destination, source, overridableKeys) {
 
 function storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, valueNode, startLine, startPos) {
   var index, quantity;
+
+  // The output is a plain object here, so keys can only be strings.
+  // We need to convert keyNode to a string, but doing so can hang the process
+  // (deeply nested arrays that explode exponentially using aliases).
+  if (Array.isArray(keyNode)) {
+    keyNode = Array.prototype.slice.call(keyNode);
+
+    for (index = 0, quantity = keyNode.length; index < quantity; index += 1) {
+      if (Array.isArray(keyNode[index])) {
+        throwError(state, 'nested arrays are not supported inside keys');
+      }
+
+      if (typeof keyNode === 'object' && _class(keyNode[index]) === '[object Object]') {
+        keyNode[index] = '[object Object]';
+      }
+    }
+  }
+
+  // Avoid code execution in load() via toString property
+  // (still use its own toString for arrays, timestamps,
+  // and whatever user schema extensions happen to have @@toStringTag)
+  if (typeof keyNode === 'object' && _class(keyNode) === '[object Object]') {
+    keyNode = '[object Object]';
+  }
+
 
   keyNode = String(keyNode);
 
@@ -26627,8 +26661,14 @@ function constructJavascriptFunction(data) {
 
   // Esprima's ranges include the first '{' and the last '}' characters on
   // function expressions. So cut them out.
+  if (ast.body[0].expression.body.type === 'BlockStatement') {
+    /*eslint-disable no-new-func*/
+    return new Function(params, source.slice(body[0] + 1, body[1] - 1));
+  }
+  // ES6 arrow functions can omit the BlockStatement. In that case, just return
+  // the body.
   /*eslint-disable no-new-func*/
-  return new Function(params, source.slice(body[0] + 1, body[1] - 1));
+  return new Function(params, 'return ' + source.slice(body[0], body[1]));
 }
 
 function representJavascriptFunction(object /*, style*/) {
@@ -59521,6 +59561,12 @@ exports.getMaxIndexLength = function(input) {
 
 },{}],229:[function(require,module,exports){
 module.exports={
+  "_args": [
+    [
+      "prettyjson@1.1.3",
+      "/Users/yagamy/Works/workspaces/t2t/yapps-tt/apps/wstty-server"
+    ]
+  ],
   "_from": "prettyjson@1.1.3",
   "_id": "prettyjson@1.1.3",
   "_inBundle": false,
@@ -59541,8 +59587,7 @@ module.exports={
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/prettyjson/-/prettyjson-1.1.3.tgz",
-  "_shasum": "d0787f732c9c3a566f4165fa4f1176fd67e6b263",
-  "_spec": "prettyjson@1.1.3",
+  "_spec": "1.1.3",
   "_where": "/Users/yagamy/Works/workspaces/t2t/yapps-tt/apps/wstty-server",
   "author": {
     "name": "Rafael de Oleza",
@@ -59555,12 +59600,10 @@ module.exports={
   "bugs": {
     "url": "https://github.com/rafeca/prettyjson/issues"
   },
-  "bundleDependencies": false,
   "dependencies": {
     "colors": "^1.1.2",
     "minimist": "^1.1.3"
   },
-  "deprecated": false,
   "description": "Package for formatting JSON data in a coloured YAML-style, perfect for CLI output",
   "devDependencies": {
     "coveralls": "^2.11.3",
